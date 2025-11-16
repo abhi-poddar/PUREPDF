@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const corsOptions = {
-    origin: 'https://purepdf-8i4y.vercel.app/',
+    origin: 'https://purepdf.netlify.app/',
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
     credentials: false
