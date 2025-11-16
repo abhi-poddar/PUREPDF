@@ -69,7 +69,8 @@ function Home() {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     console.log(apiUrl);
 
     try {
