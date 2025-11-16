@@ -10,15 +10,17 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const corsOptions = {
-    origin: 'https://purepdf.netlify.app/',
+    origin: [
+        'https://purepdf.netlify.app',
+        'https://your-frontend-url.com', // Apna actual frontend URL
+        'http://localhost:5173' // Local development
+    ],
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
     credentials: false
 };
 
 app.use(cors(corsOptions));
-
-//564786765
 
 // Ensure upload and files directories exist
 const uploadDir = path.join(__dirname, "uploads");
