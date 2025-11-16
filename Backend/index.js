@@ -163,6 +163,7 @@ app.post("/convertFile", upload.single("file"), async (req, res, next) => {
             console.log("Converting HTML to PDF...");
             const browser = await puppeteer.launch({
                 headless: 'new',
+                executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
                 args: [
                     '--no-sandbox',
                     '--disable-setuid-sandbox',
@@ -170,12 +171,13 @@ app.post("/convertFile", upload.single("file"), async (req, res, next) => {
                     '--disable-dev-shm-usage',
                     '--disable-extensions',
                     '--disable-web-resources',
-                    '--single-process'
+                    '--no-first-run',
+                    '--no-default-browser-check'
                 ]
             });
 
             const page = await browser.newPage();
-            await page.setContent(styledHtml, { waitUntil: 'networkidle0' });
+            await page.setContent(styledHtml, { waitUntil: 'domcontentloaded' }); // Changed from networkidle0
 
             await page.pdf({
                 path: outputPath,
@@ -186,7 +188,8 @@ app.post("/convertFile", upload.single("file"), async (req, res, next) => {
                     bottom: '20mm',
                     left: '20mm',
                     right: '20mm'
-                }
+                },
+                timeout: 30000 // Add timeout
             });
 
             await browser.close();
