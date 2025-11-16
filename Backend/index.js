@@ -9,8 +9,14 @@ const fs = require("fs");
 const app = express();
 const port = process.env.PORT || 3000;
 
+const corsOptions = {
+    origin: 'https://purepdf-5qe6eu0yu-abhi-poddars-projects.vercel.app',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+    credentials: false
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 //564786765
 
