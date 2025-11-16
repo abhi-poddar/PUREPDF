@@ -240,6 +240,19 @@ app.get("/health", (req, res) => {
     });
 });
 
+// Root endpoint
+app.get("/", (req, res) => {
+    return res.json({
+        status: "OK",
+        message: "PUREPDF Backend Server is running!",
+        version: "1.0.0",
+        endpoints: {
+            health: "/health",
+            convertFile: "POST /convertFile"
+        }
+    });
+});
+
 app.listen(port, () => {
     console.log(`🚀 PUREPDF Backend Server is listening on port ${port}`);
     console.log(`📁 Upload directory: ${uploadDir}`);
