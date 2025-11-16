@@ -70,6 +70,13 @@ const upload = multer({
     }
 });
 
+// Add before convertFile endpoint
+app.use((req, res, next) => {
+    req.setTimeout(120000);
+    res.setTimeout(120000);
+    next();
+});
+
 // API endpoint for file conversion
 app.post("/convertFile", upload.single("file"), async (req, res, next) => {
     try {
@@ -153,16 +160,17 @@ app.post("/convertFile", upload.single("file"), async (req, res, next) => {
             // Convert HTML to PDF using puppeteer
             console.log("Converting HTML to PDF...");
             const browser = await puppeteer.launch({
-  headless: true,
-  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
-  args: [
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--disable-gpu',
-    '--disable-dev-shm-usage'
-  ]
-});
-//ij
+                headless: 'new',
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-gpu',
+                    '--disable-dev-shm-usage',
+                    '--disable-extensions',
+                    '--disable-web-resources',
+                    '--single-process'
+                ]
+            });
 
             const page = await browser.newPage();
             await page.setContent(styledHtml, { waitUntil: 'networkidle0' });
