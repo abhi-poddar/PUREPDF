@@ -7,7 +7,8 @@ const path = require("path");
 const fs = require("fs");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
 
 app.use(cors());
 
@@ -146,9 +147,15 @@ app.post("/convertFile", upload.single("file"), async (req, res, next) => {
             // Convert HTML to PDF using puppeteer
             console.log("Converting HTML to PDF...");
             const browser = await puppeteer.launch({
-                headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
-            });
+  headless: true,
+  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-gpu',
+    '--disable-dev-shm-usage'
+  ]
+});
 
             const page = await browser.newPage();
             await page.setContent(styledHtml, { waitUntil: 'networkidle0' });
